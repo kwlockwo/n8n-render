@@ -11,11 +11,9 @@ services:
   - type: web
     plan: starter
     # This is the runtime for services that pull a prebuilt Docker image
-    runtime: image
+    runtime: docker
     # You can give the service any name
     name: n8n-service
-    image:      # Pulls the n8n image tagged as latest from Docker Hub
-      url: docker.io/n8nio/n8n:latest
 
     # All environment variables defined below are required!
     #
@@ -50,6 +48,17 @@ services:
         fromDatabase:
           name: n8n-db
           property: user
+
+      - key: DEFAULT_ADMIN_EMAIL
+        sync: false
+      - key: DEFAULT_ADMIN_FIRSTNAME
+        sync: false
+      - key: DEFAULT_ADMIN_LASTNAME
+        sync: false
+      - key: DEFAULT_ADMIN_PASSWORD
+        sync: false
+    
+    initialDeployHook: bash -c ./init_admin_user.sh
 
 databases:
   - name: n8n-db
